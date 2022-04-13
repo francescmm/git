@@ -23,7 +23,6 @@ public:
    explicit GitWip(const QSharedPointer<GitBase> &git, const QSharedPointer<GitCache> &cache);
 
    QVector<QString> getUntrackedFiles() const;
-   bool updateWip() const;
    std::optional<QPair<QString, RevisionFiles>> getWipInfo() const;
    std::optional<FileStatus> getFileStatus(const QString &filePath) const;
 

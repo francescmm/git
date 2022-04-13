@@ -1,6 +1,5 @@
 #include "GitHistory.h"
 
-#include <CommitInfo.h>
 #include <GitBase.h>
 #include <GitConfig.h>
 
@@ -77,7 +76,7 @@ GitExecResult GitHistory::getCommitDiff(const QString &sha, const QString &diffT
 
       QString runCmd = QString("git diff-tree --no-color -r --patch-with-stat -m");
 
-      if (sha != CommitInfo::ZERO_SHA)
+      if (sha != ZERO_SHA)
       {
          runCmd += " -C ";
 
@@ -119,7 +118,7 @@ GitExecResult GitHistory::getFullFileDiff(const QString &currentSha, const QStri
 
    auto cmd = QString("git diff %1 -w -U15000 ").arg(QString::fromUtf8(isCached ? "--cached" : ""));
 
-   if (currentSha.isEmpty() || currentSha == CommitInfo::ZERO_SHA)
+   if (currentSha.isEmpty() || currentSha == ZERO_SHA)
       cmd.append(file);
    else
       cmd.append(QString("%1 %2 %3").arg(previousSha, currentSha, file));
@@ -135,7 +134,7 @@ GitExecResult GitHistory::getDiffFiles(const QString &sha, const QString &diffTo
 
    auto runCmd = QString("git diff-tree -C --no-color -r -m ");
 
-   if (!diffToSha.isEmpty() && sha != CommitInfo::ZERO_SHA)
+   if (!diffToSha.isEmpty() && sha != ZERO_SHA)
       runCmd.append(diffToSha + " " + sha);
    else
       runCmd.append("4b825dc642cb6eb9a060e54bf8d69288fbee4904 " + sha);

@@ -36,6 +36,9 @@ class GitTags : public QObject
 {
    Q_OBJECT
 
+signals:
+   void remoteTagsReceived(QMap<QString, QString> tags);
+
 public:
    explicit GitTags(const QSharedPointer<GitBase> &gitBase);
    explicit GitTags(const QSharedPointer<GitBase> &gitBase, const QSharedPointer<GitCache> &cache);

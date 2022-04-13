@@ -1,6 +1,5 @@
 #include <GitAsyncProcess.h>
 #include <GitBase.h>
-#include <GitCache.h>
 #include <GitTags.h>
 #include <QLogger.h>
 
@@ -143,5 +142,5 @@ void GitTags::onRemoteTagsRecieved(GitExecResult result)
       }
    }
 
-   mCache->updateTags(std::move(tags));
+   remoteTagsReceived(std::move(tags));
 }

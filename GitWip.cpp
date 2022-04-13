@@ -1,7 +1,6 @@
 #include "GitWip.h"
 
 #include <GitBase.h>
-#include <GitCache.h>
 
 #include <QLogger.h>
 
@@ -44,7 +43,7 @@ std::optional<QPair<QString, RevisionFiles>> GitWip::getWipInfo() const
       auto parentSha = ret.output.trimmed();
 
       if (parentSha.isEmpty())
-         parentSha = CommitInfo::INIT_SHA;
+         parentSha = INIT_SHA;
 
       const auto ret3 = mGit->run(QString("git diff-index %1").arg(parentSha));
       diffIndex = ret3.success ? ret3.output : QString();
@@ -90,23 +89,12 @@ std::optional<GitWip::FileStatus> GitWip::getFileStatus(const QString &filePath)
    return std::nullopt;
 }
 
-bool GitWip::updateWip() const
-{
-   const auto files = getUntrackedFiles();
-   mCache->setUntrackedFilesList(std::move(files));
-
-   if (const auto info = getWipInfo(); info->second.isValid())
-      return mCache->updateWipCommit(info->first, info->second);
-
-   return false;
-}
-
 RevisionFiles GitWip::fakeWorkDirRevFile(const QString &diffIndex, const QString &diffIndexCache) const
 {
    RevisionFiles rf(diffIndex);
    rf.setOnlyModified(false);
 
-   const auto untrackedFiles = mCache->getUntrackedFiles();
+   const auto untrackedFiles = getUntrackedFiles();
    for (const auto &it : untrackedFiles)
    {
       rf.mFiles.append(it);
