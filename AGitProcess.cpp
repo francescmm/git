@@ -1,6 +1,6 @@
 #include "AGitProcess.h"
 
-#include <GitQlientSettings.h>
+#include <QSettings>
 #include <QTextStream>
 
 #include <QLogger.h>
@@ -161,7 +161,7 @@ bool AGitProcess::execute(const QString &command)
       env << "GIT_FLUSH=0"; // skip the fflush() in 'git log'
       env << loginApp();
 
-      const auto gitAlternative = GitQlientSettings().globalValue("gitLocation", "").toString();
+      const auto gitAlternative = QSettings().globalValue("gitLocation", "").toString();
 
       setEnvironment(env);
       setProgram(gitAlternative.isEmpty() ? arguments.takeFirst() : gitAlternative);

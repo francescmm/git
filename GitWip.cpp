@@ -44,7 +44,7 @@ std::optional<QPair<QString, RevisionFiles>> GitWip::getWipInfo() const
       auto parentSha = ret.output.trimmed();
 
       if (parentSha.isEmpty())
-         parentSha = CommitInfo::INIT_SHA;
+         parentSha = INIT_SHA;
 
       const auto ret3 = mGit->run(QString("git diff-index %1").arg(parentSha));
       diffIndex = ret3.success ? ret3.output : QString();

@@ -26,6 +26,9 @@
 #include <QPair>
 #include <QVariant>
 
+static const char *ZERO_SHA = "0000000000000000000000000000000000000000";
+static const char *INIT_SHA = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
+
 struct GitExecResult
 {
    GitExecResult() = default;
