@@ -8,9 +8,8 @@
 
 using namespace QLogger;
 
-GitWip::GitWip(const QSharedPointer<GitBase> &git, const QSharedPointer<GitCache> &cache)
+GitWip::GitWip(const QSharedPointer<GitBase> &git)
    : mGit(git)
-   , mCache(cache)
 {
 }
 

@@ -8,7 +8,6 @@
 #include <optional>
 
 class GitBase;
-class GitCache;
 
 class GitWip
 {
@@ -20,7 +19,7 @@ public:
       DeletedByUs
    };
 
-   explicit GitWip(const QSharedPointer<GitBase> &git, const QSharedPointer<GitCache> &cache);
+   explicit GitWip(const QSharedPointer<GitBase> &git);
 
    QVector<QString> getUntrackedFiles() const;
    std::optional<QPair<QString, RevisionFiles>> getWipInfo() const;
@@ -28,7 +27,6 @@ public:
 
 private:
    QSharedPointer<GitBase> mGit;
-   QSharedPointer<GitCache> mCache;
 
    RevisionFiles fakeWorkDirRevFile(const QString &diffIndex, const QString &diffIndexCache) const;
 };

@@ -18,22 +18,11 @@ bool validateSha(const QString &sha)
 GitTags::GitTags(const QSharedPointer<GitBase> &gitBase)
    : mGitBase(gitBase)
 {
-}
-
-GitTags::GitTags(const QSharedPointer<GitBase> &gitBase, const QSharedPointer<GitCache> &cache)
-   : mGitBase(gitBase)
-   , mCache(cache)
-{
+   qRegisterMetaType<QMap<QString, QString>>("QMap<QString,QString>");
 }
 
 bool GitTags::getRemoteTags() const
 {
-   if (!mCache.get())
-   {
-      QLog_Fatal("Git", QString("Getting remote tags without cache."));
-      assert(mCache.get());
-   }
-
    QLog_Debug("Git", QString("Getting remote tags"));
 
    const auto cmd = QString("git ls-remote --tags");
