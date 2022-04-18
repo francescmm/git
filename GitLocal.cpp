@@ -236,7 +236,7 @@ GitExecResult GitLocal::commitFiles(QStringList &selFiles, const RevisionFiles &
    auto ret = mGitBase->run(cmd);
 
    if (ret.output.startsWith("On branch"))
-      ret.output = false;
+      ret.success = false;
 
    return ret;
 }
