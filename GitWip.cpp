@@ -1,7 +1,6 @@
 #include "GitWip.h"
 
 #include <GitBase.h>
-#include <GitCache.h>
 
 #include <QLogger.h>
 
@@ -9,9 +8,8 @@
 
 using namespace QLogger;
 
-GitWip::GitWip(const QSharedPointer<GitBase> &git, const QSharedPointer<GitCache> &cache)
+GitWip::GitWip(const QSharedPointer<GitBase> &git)
    : mGit(git)
-   , mCache(cache)
 {
 }
 
@@ -90,23 +88,12 @@ std::optional<GitWip::FileStatus> GitWip::getFileStatus(const QString &filePath)
    return std::nullopt;
 }
 
-bool GitWip::updateWip() const
-{
-   const auto files = getUntrackedFiles();
-   mCache->setUntrackedFilesList(std::move(files));
-
-   if (const auto info = getWipInfo(); info->second.isValid())
-      return mCache->updateWipCommit(info->first, info->second);
-
-   return false;
-}
-
 RevisionFiles GitWip::fakeWorkDirRevFile(const QString &diffIndex, const QString &diffIndexCache) const
 {
    RevisionFiles rf(diffIndex);
    rf.setOnlyModified(false);
 
-   const auto untrackedFiles = mCache->getUntrackedFiles();
+   const auto untrackedFiles = getUntrackedFiles();
    for (const auto &it : untrackedFiles)
    {
       rf.mFiles.append(it);

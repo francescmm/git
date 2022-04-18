@@ -161,7 +161,7 @@ bool AGitProcess::execute(const QString &command)
       env << "GIT_FLUSH=0"; // skip the fflush() in 'git log'
       env << loginApp();
 
-      const auto gitAlternative = QSettings().globalValue("gitLocation", "").toString();
+      const auto gitAlternative = QSettings().value("gitLocation", "").toString();
 
       setEnvironment(env);
       setProgram(gitAlternative.isEmpty() ? arguments.takeFirst() : gitAlternative);
