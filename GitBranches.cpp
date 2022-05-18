@@ -206,3 +206,11 @@ GitExecResult GitBranches::rebaseOnto(const QString &currentBranch, const QStrin
    const auto cmd = QString("git rebase --onto %1 %2 %3").arg(currentBranch, startBranch, fromBranch);
    return mGitBase->run(cmd);
 }
+
+GitExecResult GitBranches::unsetUpstream() const
+{
+   QLog_Debug("Git", QString("Git unset current branch upstream"));
+
+   const auto cmd = QString("git branch --unset-upstream");
+   return mGitBase->run(cmd);
+}

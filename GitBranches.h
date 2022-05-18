@@ -45,6 +45,7 @@ public:
    GitExecResult getLastCommitOfBranch(const QString &branch);
    GitExecResult pushUpstream(const QString &branchName);
    GitExecResult rebaseOnto(const QString &currentBranch, const QString &startBranch, const QString &fromBranch) const;
+   GitExecResult unsetUpstream() const;
 
 private:
    QSharedPointer<GitBase> mGitBase;
