@@ -44,6 +44,9 @@ std::optional<QPair<QString, RevisionFiles>> GitWip::getWipInfo() const
       if (parentSha.isEmpty())
          parentSha = INIT_SHA;
 
+      const auto ret2 = mGit->run(QString("git update-index --refresh"));
+      diffIndex = ret2.success ? ret2.output : QString();
+
       const auto ret3 = mGit->run(QString("git diff-index %1").arg(parentSha));
       diffIndex = ret3.success ? ret3.output : QString();
 
