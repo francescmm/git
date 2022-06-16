@@ -25,6 +25,19 @@ GitExecResult GitBranches::createBranchFromAnotherBranch(const QString &oldName,
    return ret;
 }
 
+GitExecResult GitBranches::checkoutNewLocalBranchFromAnotherBranch(const QString &oldName, const QString &newName) const
+{
+   QLog_Debug("Git", QString("Creating branch from another branch: {%1} and {%2}").arg(oldName, newName));
+
+   const auto cmd = QString("git checkout -b %1 %2").arg(newName, oldName);
+
+   QLog_Trace("Git", QString("Creating branch from another branch: {%1}").arg(cmd));
+
+   const auto ret = mGitBase->run(cmd);
+
+   return ret;
+}
+
 GitExecResult GitBranches::createBranchAtCommit(const QString &commitSha, const QString &branchName)
 {
    QLog_Debug("Git", QString("Creating a branch from a commit: {%1} at {%2}").arg(branchName, commitSha));
