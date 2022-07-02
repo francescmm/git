@@ -18,15 +18,10 @@ GitExecResult GitRemote::pushBranch(const QString &branchName, bool force)
    QLog_Debug("Git", QString("Executing push"));
 
    QScopedPointer<GitConfig> gitConfig(new GitConfig(mGitBase));
-   auto ret = gitConfig->getRemoteForBranch(branchName);
+   const auto ret = gitConfig->getRemoteForBranch(branchName);
+   const auto remote = ret.success && !ret.output.isEmpty() ? ret.output : QString("origin");
 
-   if (ret.success)
-   {
-      const auto remote = ret.output.isEmpty() ? QString("origin") : ret.output;
-      ret = mGitBase->run(QString("git push %1 %2 %3").arg(remote, branchName, force ? QString("--force") : QString()));
-   }
-
-   return ret;
+   return mGitBase->run(QString("git push %1 %2 %3").arg(remote, branchName, force ? QString("--force") : QString()));
 }
 
 GitExecResult GitRemote::push(bool force)
