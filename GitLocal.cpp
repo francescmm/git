@@ -202,7 +202,7 @@ GitExecResult GitLocal::commit(const QString &msg) const
    return ret;
 }
 
-GitExecResult GitLocal::ammend(const QString &msg) const
+GitExecResult GitLocal::amend(const QString &msg) const
 {
    QLog_Debug("Git", QString("Amend message"));
 
@@ -241,7 +241,7 @@ GitExecResult GitLocal::commitFiles(QStringList &selFiles, const RevisionFiles &
    return ret;
 }
 
-GitExecResult GitLocal::ammendCommit(const QStringList &selFiles, const RevisionFiles &allCommitFiles,
+GitExecResult GitLocal::amendCommit(const QStringList &selFiles, const RevisionFiles &allCommitFiles,
                                      const QString &msg, const QString &author) const
 {
    QStringList notSel;
