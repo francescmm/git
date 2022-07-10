@@ -51,13 +51,15 @@ public:
    GitExecResult markFilesAsResolved(const QStringList &files);
    bool checkoutFile(const QString &fileName) const;
 
+   GitExecResult revert(const QString &sha) const;
    GitExecResult resetFile(const QString &fileName) const;
    bool resetCommit(const QString &sha, CommitResetType type);
    GitExecResult commit(const QString &msg) const;
    GitExecResult amend(const QString &msg = QString()) const;
    GitExecResult commitFiles(QStringList &selFiles, const RevisionFiles &allCommitFiles, const QString &msg) const;
    GitExecResult amendCommit(const QStringList &selFiles, const RevisionFiles &allCommitFiles, const QString &msg,
-                              const QString &author = QString()) const;
+                             const QString &author = QString()) const;
+   GitExecResult cleanUntracked() const;
 
 private:
    QSharedPointer<GitBase> mGitBase;

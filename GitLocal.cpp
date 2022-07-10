@@ -146,9 +146,16 @@ bool GitLocal::checkoutFile(const QString &fileName) const
 
    QLog_Trace("Git", QString("Checking out a file: {%1}").arg(cmd));
 
-   const auto ret = mGitBase->run(cmd).success;
+   return mGitBase->run(cmd).success;
+}
 
-   return ret;
+GitExecResult GitLocal::revert(const QString &sha) const
+{
+   QLog_Debug("Git", QString("Reverting sha: {%1}").arg(sha));
+
+   const auto cmd = QString("git revert %1").arg(sha);
+
+   return mGitBase->run(cmd);
 }
 
 GitExecResult GitLocal::resetFile(const QString &fileName) const
@@ -159,9 +166,7 @@ GitExecResult GitLocal::resetFile(const QString &fileName) const
 
    QLog_Trace("Git", QString("Getting remote tags: {%1}").arg(cmd));
 
-   const auto ret = mGitBase->run(cmd);
-
-   return ret;
+   return mGitBase->run(cmd);
 }
 
 bool GitLocal::resetCommit(const QString &sha, CommitResetType type)
@@ -187,9 +192,7 @@ bool GitLocal::resetCommit(const QString &sha, CommitResetType type)
 
    QLog_Trace("Git", QString("Resetting commit: {%1}").arg(cmd));
 
-   const auto ret = mGitBase->run(cmd);
-
-   return ret.success;
+   return mGitBase->run(cmd).success;
 }
 
 GitExecResult GitLocal::commit(const QString &msg) const
@@ -197,9 +200,7 @@ GitExecResult GitLocal::commit(const QString &msg) const
    QLog_Debug("Git", QString("Commit changes"));
 
    const auto cmd = QString("git commit -m \"%1\"").arg(msg);
-   const auto ret = mGitBase->run(cmd);
-
-   return ret;
+   return mGitBase->run(cmd);
 }
 
 GitExecResult GitLocal::amend(const QString &msg) const
@@ -242,7 +243,7 @@ GitExecResult GitLocal::commitFiles(QStringList &selFiles, const RevisionFiles &
 }
 
 GitExecResult GitLocal::amendCommit(const QStringList &selFiles, const RevisionFiles &allCommitFiles,
-                                     const QString &msg, const QString &author) const
+                                    const QString &msg, const QString &author) const
 {
    QStringList notSel;
 
@@ -268,6 +269,13 @@ GitExecResult GitLocal::amendCommit(const QStringList &selFiles, const RevisionF
    const auto ret = mGitBase->run(cmd);
 
    return ret;
+}
+
+GitExecResult GitLocal::cleanUntracked() const
+{
+   QLog_Debug("Git", QString("Cleaning utnracked files"));
+
+   return mGitBase->run("git clean -f");
 }
 
 GitExecResult GitLocal::updateIndex(const RevisionFiles &files, const QStringList &selFiles) const
