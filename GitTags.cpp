@@ -3,15 +3,17 @@
 #include <GitTags.h>
 #include <QLogger.h>
 
+#include <QRegularExpression>
+
 using namespace QLogger;
 
 namespace
 {
 bool validateSha(const QString &sha)
 {
-   static QRegExp hexMatcher("^[0-9A-F]{40}$", Qt::CaseInsensitive);
+   static QRegularExpression hexMatcher("^[0-9A-F]{40}$", QRegularExpression::CaseInsensitiveOption);
 
-   return !sha.isEmpty() && hexMatcher.exactMatch(sha);
+   return !sha.isEmpty() && hexMatcher.match(sha).hasMatch();
 }
 }
 
@@ -131,5 +133,5 @@ void GitTags::onRemoteTagsRecieved(GitExecResult result)
       }
    }
 
-   remoteTagsReceived(std::move(tags));
+   emit remoteTagsReceived(std::move(tags));
 }

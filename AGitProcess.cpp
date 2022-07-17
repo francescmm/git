@@ -14,7 +14,7 @@ QString loginApp()
    const auto askPassApp = qEnvironmentVariable("SSH_ASKPASS");
 
    if (!askPassApp.isEmpty())
-      return QString("%1=%2").arg("SSH_ASKPASS", askPassApp);
+      return QString("%1=%2").arg(QString::fromUtf8("SSH_ASKPASS"), askPassApp);
 
 #if defined(Q_OS_WIN)
    return QString("SSH_ASKPASS=win-ssh-askpass");
@@ -107,8 +107,11 @@ QStringList splitArgList(const QString &cmd)
       if (it->isEmpty())
          continue;
 
-      if (((*it).at(0) == "\"" && (*it).right(1) == "\"") || ((*it).at(0) == "\'" && (*it).right(1) == "\'"))
+      if (((*it).at(0) == QStringLiteral("\"") && (*it).right(1) == QStringLiteral("\""))
+          || ((*it).at(0) == QStringLiteral("\'") && (*it).right(1) == QStringLiteral("\'")))
+      {
          *it = (*it).mid(1, (*it).length() - 2);
+      }
    }
    return sl;
 }
