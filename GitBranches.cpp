@@ -227,3 +227,21 @@ GitExecResult GitBranches::unsetUpstream() const
    const auto cmd = QString("git branch --unset-upstream");
    return mGitBase->run(cmd);
 }
+
+bool GitBranches::isCommitInCurrentGeneologyTree(const QString &sha) const
+{
+   QLog_Debug("Git", QString("Check if commit {%1} is in current geneology tree").arg(sha));
+
+   const auto cmd = QString("git branch --contains %1").arg(sha);
+   const auto ret = mGitBase->run(cmd);
+
+   if (ret.success)
+   {
+      const auto branches = ret.output.trimmed();
+
+      if (branches.contains(mGitBase->getCurrentBranch()))
+         return ret.success;
+   }
+
+   return false;
+}

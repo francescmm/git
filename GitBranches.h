@@ -47,6 +47,7 @@ public:
    GitExecResult pushUpstream(const QString &branchName);
    GitExecResult rebaseOnto(const QString &currentBranch, const QString &startBranch, const QString &fromBranch) const;
    GitExecResult unsetUpstream() const;
+   bool isCommitInCurrentGeneologyTree(const QString &sha) const;
 
 private:
    QSharedPointer<GitBase> mGitBase;
