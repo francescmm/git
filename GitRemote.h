@@ -39,6 +39,7 @@ public:
    GitExecResult pushCommit(const QString &sha, const QString &remoteBranch);
    GitExecResult pull(bool updateSubmodulesOnPull = false);
    bool fetch(bool autoPrune = false);
+   bool fetchBranch(const QString &branch) const;
    GitExecResult prune();
    GitExecResult addRemote(const QString &remoteRepo, const QString &remoteName);
    GitExecResult removeRemote(const QString &remoteName);

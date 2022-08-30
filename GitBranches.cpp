@@ -2,6 +2,7 @@
 
 #include <GitBase.h>
 #include <GitConfig.h>
+#include <GitRemote.h>
 
 #include <QLogger.h>
 
@@ -226,6 +227,28 @@ GitExecResult GitBranches::unsetUpstream() const
 
    const auto cmd = QString("git branch --unset-upstream");
    return mGitBase->run(cmd);
+}
+
+GitExecResult GitBranches::resetToOrigin(const QString &branch) const
+{
+   QLog_Debug("Git", QString("Git reset unchecked local branch to it's origin"));
+
+   QString remoteName;
+
+   if (QScopedPointer<GitRemote> gitRemote(new GitRemote(mGitBase)); gitRemote->fetchBranch(branch))
+   {
+      QScopedPointer<GitConfig> gitConfig(new GitConfig(mGitBase));
+      const auto remote = gitConfig->getRemoteForBranch(branch);
+      if (remote.success)
+         remoteName = remote.output;
+      else
+         return { false, "Remote not found" };
+   }
+
+   if (const auto fetchRes = mGitBase->run(QString("git fetch %1 %2").arg(remoteName, branch)); fetchRes.success)
+      return mGitBase->run(QString("git branch -f %2 %1/%2").arg(remoteName, branch));
+
+   return { false, "Remote couldn't be fetched" };
 }
 
 bool GitBranches::isCommitInCurrentGeneologyTree(const QString &sha) const

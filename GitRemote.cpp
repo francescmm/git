@@ -77,6 +77,25 @@ bool GitRemote::fetch(bool autoPrune)
    return ret;
 }
 
+bool GitRemote::fetchBranch(const QString &branch) const
+{
+   QLog_Debug("Git", QString("Executing fetch over a branch"));
+
+   QString remoteName;
+
+   {
+      QScopedPointer<GitConfig> gitConfig(new GitConfig(mGitBase));
+      auto ret = gitConfig->getRemoteForBranch(branch);
+      if (ret.success)
+         remoteName = ret.output;
+   }
+
+   const auto cmd = QString("git fetch %1 %2").arg(remoteName, branch);
+   const auto ret = mGitBase->run(cmd).success;
+
+   return ret;
+}
+
 GitExecResult GitRemote::prune()
 {
    QLog_Debug("Git", QString("Executing prune"));
