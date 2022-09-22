@@ -38,6 +38,8 @@ public:
    GitExecResult history(const QString &file);
    GitExecResult getBranchesDiff(const QString &base, const QString &head);
    GitExecResult getCommitDiff(const QString &sha, const QString &diffToSha);
+   GitExecResult getFileDiff(const QString &file, bool isCached, const QString &currentSha,
+                             const QString &previousSha) const;
    GitExecResult getWipFileDiff(const QString &file, bool isCached) const;
    GitExecResult getFullFileDiff(const QString &currentSha, const QString &previousSha, const QString &file,
                                  bool isCached);
