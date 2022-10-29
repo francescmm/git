@@ -191,8 +191,9 @@ void AGitProcess::onFinished(int exitCode, QProcess::ExitStatus exitStatus)
    const auto errorOutput = readAllStandardError();
 
    mErrorOutput = QString::fromUtf8(errorOutput);
-   mRealError = exitStatus != QProcess::NormalExit || mCanceling || errorOutput.contains("error")
-       || errorOutput.contains("fatal: ") || errorOutput.toLower().contains("could not read username");
+   mRealError = exitStatus != QProcess::NormalExit || mCanceling || mErrorOutput.contains("error", Qt::CaseInsensitive)
+       || mErrorOutput.contains("fatal: ", Qt::CaseInsensitive)
+       || mErrorOutput.contains("could not read username", Qt::CaseInsensitive);
 
    if (mRealError)
    {

@@ -52,7 +52,7 @@ GitExecResult GitStashes::stash()
 {
    QLog_Debug("Git", QString("Stashing changes"));
 
-   const auto cmd = QString("git stash");
+   const auto cmd = QString("git stash --include-untracked");
 
    QLog_Trace("Git", QString("Stashing changes: {%1}").arg(cmd));
 
