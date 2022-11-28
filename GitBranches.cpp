@@ -251,6 +251,13 @@ GitExecResult GitBranches::resetToOrigin(const QString &branch) const
    return { false, "Remote couldn't be fetched" };
 }
 
+GitExecResult GitBranches::resetToSha(const QString &branch, const QString &sha) const
+{
+   QLog_Debug("Git", QString("Git reset unchecked local branch to a specific SHA"));
+
+   return mGitBase->run(QString("git branch -f %1 %2").arg(branch, sha));
+}
+
 bool GitBranches::isCommitInCurrentGeneologyTree(const QString &sha) const
 {
    QLog_Debug("Git", QString("Check if commit {%1} is in current geneology tree").arg(sha));

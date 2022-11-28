@@ -48,6 +48,7 @@ public:
    GitExecResult rebaseOnto(const QString &currentBranch, const QString &startBranch, const QString &fromBranch) const;
    GitExecResult unsetUpstream() const;
    GitExecResult resetToOrigin(const QString &branch) const;
+   GitExecResult resetToSha(const QString &branch, const QString &sha) const;
    bool isCommitInCurrentGeneologyTree(const QString &sha) const;
 
 private:
