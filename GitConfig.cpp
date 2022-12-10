@@ -234,12 +234,12 @@ QPair<QString, QString> GitConfig::getCurrentRepoAndOwner() const
    return qMakePair(parts.constFirst(), parts.constLast());
 }
 
-GitExecResult GitConfig::unset(const QString &key, bool isGlobal) const
+GitExecResult GitConfig::unset(const QString &key, ConfigType type) const
 {
    QLog_Debug("Git", QString("Unsetting value for config key {%1}").arg(key));
 
-   const auto ret
-       = mGitBase->run(QString("git config %1 --unset %2").arg(QString::fromUtf8(isGlobal ? "--global" : ""), key));
+   const auto ret = mGitBase->run(
+       QString("git config %1 --unset %2").arg(QString::fromUtf8(type == ConfigType::Global ? "--global" : ""), key));
 
    return ret;
 }

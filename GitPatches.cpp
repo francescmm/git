@@ -50,11 +50,13 @@ GitExecResult GitPatches::exportPatch(const QStringList &shaList)
    return qMakePair(true, files.join("<br>"));
 }
 
-GitExecResult GitPatches::applyPatch(const QString &fileName, bool asCommit)
+GitExecResult GitPatches::applyPatch(const QString &fileName, ApplyBehaviour behavior)
 {
-   QLog_Debug("Git", QString("Applying patch: {%1} %2").arg(fileName, asCommit ? QString("as commit.") : QString()));
+   QLog_Debug("Git",
+              QString("Applying patch: {%1} %2")
+                  .arg(fileName, behavior == ApplyBehaviour::Commit ? QString("as commit.") : QString()));
 
-   auto cmd = asCommit ? QString("git am --signof ") : QString("git apply ");
+   auto cmd = behavior == ApplyBehaviour::Commit ? QString("git am --signof ") : QString("git apply ");
 
    cmd.append(fileName);
 

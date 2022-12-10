@@ -175,13 +175,13 @@ bool GitLocal::resetCommit(const QString &sha, CommitResetType type)
 
    switch (type)
    {
-      case CommitResetType::SOFT:
+      case CommitResetType::Soft:
          typeStr = "soft";
          break;
-      case CommitResetType::MIXED:
+      case CommitResetType::Mixed:
          typeStr = "mixed";
          break;
-      case CommitResetType::HARD:
+      case CommitResetType::Hard:
          typeStr = "hard";
          break;
    }

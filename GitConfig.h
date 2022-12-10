@@ -48,6 +48,11 @@ signals:
    void signalCloningFailure(int error, QString failure);
 
 public:
+   enum class ConfigType
+   {
+      Global,
+      Local
+   };
    explicit GitConfig(QSharedPointer<GitBase> gitBase, QObject *parent = nullptr);
 
    GitUserInfo getGlobalUserInfo() const;
@@ -65,7 +70,7 @@ public:
    QString getServerUrl() const;
    QString getServerHost() const;
    QPair<QString, QString> getCurrentRepoAndOwner() const;
-   GitExecResult unset(const QString &key, bool isGlobal = false) const;
+   GitExecResult unset(const QString &key, ConfigType type = ConfigType::Local) const;
 
 private:
    QSharedPointer<GitBase> mGitBase;

@@ -32,9 +32,15 @@ class GitBase;
 class GitPatches
 {
 public:
+   enum class ApplyBehaviour
+   {
+      Commit,
+      NoCommit
+   };
+
    explicit GitPatches(const QSharedPointer<GitBase> &gitBase);
    GitExecResult exportPatch(const QStringList &shaList);
-   GitExecResult applyPatch(const QString &fileName, bool asCommit = false);
+   GitExecResult applyPatch(const QString &fileName, ApplyBehaviour behavior = ApplyBehaviour::NoCommit);
    GitExecResult stagePatch(const QString &fileName) const;
    GitExecResult discardPatch(const QString &fileName) const;
    GitExecResult resetPatch(const QString &fileName) const;

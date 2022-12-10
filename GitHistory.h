@@ -32,6 +32,12 @@ class GitBase;
 class GitHistory
 {
 public:
+   enum class WipDiffConfig
+   {
+      Cached,
+      NonCached
+   };
+
    explicit GitHistory(const QSharedPointer<GitBase> &gitBase);
 
    GitExecResult blame(const QString &file, const QString &commitFrom);
@@ -40,7 +46,7 @@ public:
    GitExecResult getCommitDiff(const QString &sha, const QString &diffToSha);
    GitExecResult getFileDiff(const QString &file, bool isCached, const QString &currentSha,
                              const QString &previousSha) const;
-   GitExecResult getWipFileDiff(const QString &file, bool isCached) const;
+   GitExecResult getWipFileDiff(const QString &file, WipDiffConfig diffConfig) const;
    GitExecResult getFullFileDiff(const QString &currentSha, const QString &previousSha, const QString &file,
                                  bool isCached);
    GitExecResult getDiffFiles(const QString &sha, const QString &diffToSha);

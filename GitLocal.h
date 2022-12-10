@@ -35,9 +35,9 @@ class GitLocal
 public:
    enum class CommitResetType
    {
-      SOFT,
-      MIXED,
-      HARD
+      Soft,
+      Mixed,
+      Hard
    };
 
    explicit GitLocal(const QSharedPointer<GitBase> &gitBase);

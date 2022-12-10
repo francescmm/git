@@ -24,15 +24,6 @@ GitExecResult GitRemote::pushBranch(const QString &branchName, bool force)
    return mGitBase->run(QString("git push %1 %2 %3").arg(remote, branchName, force ? QString("--force") : QString()));
 }
 
-GitExecResult GitRemote::push(bool force)
-{
-   QLog_Debug("Git", QString("Executing push"));
-
-   const auto ret = mGitBase->run(QString("git push ").append(force ? QString("--force") : QString()));
-
-   return ret;
-}
-
 GitExecResult GitRemote::pushCommit(const QString &sha, const QString &remoteBranch)
 {
    QLog_Debug("Git", QString("Executing pushCommit"));

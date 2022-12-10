@@ -35,7 +35,6 @@ public:
    explicit GitRemote(const QSharedPointer<GitBase> &gitBase);
 
    GitExecResult pushBranch(const QString &branchName, bool force = false);
-   GitExecResult push(bool force = false);
    GitExecResult pushCommit(const QString &sha, const QString &remoteBranch);
    GitExecResult pull(bool updateSubmodulesOnPull = false);
    bool fetch(bool autoPrune = false);

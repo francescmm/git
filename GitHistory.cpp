@@ -112,13 +112,14 @@ GitExecResult GitHistory::getFileDiff(const QString &file, bool isCached, const 
    return mGitBase->run(cmd);
 }
 
-GitExecResult GitHistory::getWipFileDiff(const QString &file, bool isCached) const
+GitExecResult GitHistory::getWipFileDiff(const QString &file, WipDiffConfig diffConfig) const
 {
-   QLog_Debug(
-       "Git",
-       QString("Getting diff for a WIP %1 file: {%2}").arg(QString::fromUtf8(isCached ? "unstaged" : "staged"), file));
+   QLog_Debug("Git",
+              QString("Getting diff for a WIP %1 file: {%2}")
+                  .arg(QString::fromUtf8(diffConfig == WipDiffConfig::NonCached ? "unstaged" : "staged"), file));
 
-   const auto cmd = QString("git diff %1 %2 ").arg(QString::fromUtf8(isCached ? "--cached" : ""), file);
+   const auto cmd
+       = QString("git diff %1 %2 ").arg(QString::fromUtf8(diffConfig == WipDiffConfig::Cached ? "--cached" : ""), file);
 
    QLog_Trace("Git", QString("Getting diff for the WIP file: {%1}").arg(cmd));
 
