@@ -1,5 +1,6 @@
 #include "GitConfig.h"
 
+#include <GitAsyncProcess.h>
 #include <GitBase.h>
 #include <GitCloneProcess.h>
 
@@ -71,6 +72,38 @@ GitUserInfo GitConfig::getLocalUserInfo() const
       userInfo.mUserEmail = emailRequest.output.trimmed();
 
    return userInfo;
+}
+
+bool GitConfig::getUserNameAsync(bool local)
+{
+   QLog_Debug("Git", QString("Getting global config"));
+
+   const auto p = new GitAsyncProcess(mGitBase->getWorkingDir());
+   connect(p, &GitAsyncProcess::signalDataReady, this, [this, local](GitExecResult ret) {
+      if (ret.success)
+         emit signalNameReceived(ret.output.trimmed(), local);
+   });
+
+   const auto ret
+       = p->run(QString("git config --get --%1 user.name").arg(QString::fromUtf8(local ? "local" : "global")));
+
+   return ret.success;
+}
+
+bool GitConfig::getUserEmailAsync(bool local)
+{
+   QLog_Debug("Git", QString("Getting global config"));
+
+   const auto p = new GitAsyncProcess(mGitBase->getWorkingDir());
+   connect(p, &GitAsyncProcess::signalDataReady, this, [this, local](GitExecResult ret) {
+      if (ret.success)
+         emit signalEmailReceived(ret.output.trimmed(), local);
+   });
+
+   const auto ret
+       = p->run(QString("git config --get --%1 user.email").arg(QString::fromUtf8(local ? "local" : "global")));
+
+   return ret.success;
 }
 
 void GitConfig::setLocalUserInfo(const GitUserInfo &info)

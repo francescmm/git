@@ -46,6 +46,10 @@ class GitConfig : public QObject
 signals:
    void signalCloningProgress(QString stepDescription, int value);
    void signalCloningFailure(int error, QString failure);
+   void signalGlobalInfoReceived(GitUserInfo info);
+   void signalLocalInfoReceived(GitUserInfo info);
+   void signalNameReceived(QString name, bool local);
+   void signalEmailReceived(QString name, bool local);
 
 public:
    explicit GitConfig(QSharedPointer<GitBase> gitBase, QObject *parent = nullptr);
@@ -54,6 +58,8 @@ public:
    void setGlobalUserInfo(const GitUserInfo &info);
    GitExecResult setGlobalData(const QString &key, const QString &value);
    GitUserInfo getLocalUserInfo() const;
+   bool getUserNameAsync(bool local);
+   bool getUserEmailAsync(bool local);
    void setLocalUserInfo(const GitUserInfo &info);
    GitExecResult setLocalData(const QString &key, const QString &value);
    GitExecResult clone(const QString &url, const QString &fullPath);
