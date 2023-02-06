@@ -199,11 +199,12 @@ GitExecResult GitBranches::getLastCommitOfBranch(const QString &branch)
    return ret;
 }
 
-GitExecResult GitBranches::pushUpstream(const QString &branchName)
+GitExecResult GitBranches::pushUpstream(const QString &remoteBranch, const QString &remote, const QString &localBranch)
 {
-   QLog_Debug("Git", QString("Pushing upstream: {%1}").arg(branchName));
+   QLog_Debug("Git", QString("Pushing upstream: {%1/%2}").arg(remote, remoteBranch));
 
-   const auto cmd = QString("git push --set-upstream origin %1").arg(branchName);
+   const auto cmd
+       = QString("git push --set-upstream %1 %2").arg(remote, QString("%1:%2").arg(localBranch, remoteBranch));
 
    QLog_Trace("Git", QString("Pushing upstream: {%1}").arg(cmd));
 

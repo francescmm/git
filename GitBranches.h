@@ -44,7 +44,7 @@ public:
    GitExecResult removeLocalBranch(const QString &branchName);
    GitExecResult removeRemoteBranch(const QString &branchName);
    GitExecResult getLastCommitOfBranch(const QString &branch);
-   GitExecResult pushUpstream(const QString &branchName);
+   GitExecResult pushUpstream(const QString &localBranch, const QString &remote, const QString &remoteBranch);
    GitExecResult rebaseOnto(const QString &currentBranch, const QString &startBranch, const QString &fromBranch) const;
    GitExecResult unsetUpstream() const;
    GitExecResult resetToOrigin(const QString &branch) const;

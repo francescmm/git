@@ -125,3 +125,10 @@ GitExecResult GitRemote::removeRemote(const QString &remoteName)
 
    return mGitBase->run(QString("git remote rm %1").arg(remoteName));
 }
+
+GitExecResult GitRemote::getRemotes() const
+{
+   QLog_Debug("Git", QString("Getting the list of all remote repositories"));
+
+   return mGitBase->run("git remote");
+}
