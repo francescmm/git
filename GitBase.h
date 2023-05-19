@@ -38,6 +38,8 @@ public:
 
    QString getGitDir() const;
 
+   QString getTopLevelRepo(const QString &path) const;
+
    void updateCurrentBranch();
 
    QString getCurrentBranch();

@@ -44,6 +44,19 @@ QString GitBase::getGitDir() const
    return mGitDirectory;
 }
 
+QString GitBase::getTopLevelRepo(const QString &path) const
+{
+   QLog_Trace("Git", "Updating the cached current branch");
+
+   const auto cmd = QString("git -C %1 rev-parse --show-toplevel").arg(path);
+
+   QLog_Trace("Git", QString("Updating the cached current branch: {%1}").arg(cmd));
+
+   const auto ret = run(cmd);
+
+   return ret.success ? ret.output.trimmed() : QString {};
+}
+
 GitExecResult GitBase::run(const QString &cmd) const
 {
    GitSyncProcess p(mWorkingDirectory);
