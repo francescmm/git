@@ -25,8 +25,10 @@ GitLocal::GitLocal(const QSharedPointer<GitBase> &gitBase)
 {
 }
 
-GitExecResult GitLocal::stageFile(const QString &fileName) const
+GitExecResult GitLocal::stageFile(QString fileName) const
 {
+   fileName = fileName.replace(" ", "\\ ");
+
    QLog_Debug("Git", QString("Staging file: {%1}").arg(fileName));
 
    const auto cmd = QString("git add %1").arg(fileName);
