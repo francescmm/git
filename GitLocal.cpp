@@ -275,9 +275,9 @@ GitExecResult GitLocal::amendCommit(const QStringList &selFiles, const RevisionF
 
 GitExecResult GitLocal::cleanUntracked() const
 {
-   QLog_Debug("Git", QString("Cleaning utnracked files"));
+   QLog_Debug("Git", QString("Cleaning untracked files"));
 
-   return mGitBase->run("git clean -f");
+   return mGitBase->run("git clean -f -d");
 }
 
 GitExecResult GitLocal::updateIndex(const RevisionFiles &files, const QStringList &selFiles) const
