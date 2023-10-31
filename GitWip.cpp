@@ -81,7 +81,7 @@ std::optional<GitWip::FileStatus> GitWip::getFileStatus(const QString &filePath)
       {
          const auto statusField = lines[0].split(" ").last().split("\t").constFirst();
 
-         if (statusField.count() == 2)
+         if (statusField.length() == 2)
             return FileStatus::BothModified;
 
          return FileStatus::DeletedByUs;
