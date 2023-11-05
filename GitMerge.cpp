@@ -104,3 +104,12 @@ GitExecResult GitMerge::squashMerge(const QString &into, QStringList sources, co
 
    return retMerge;
 }
+
+GitExecResult GitMerge::rebase(const QString &ontoBranch) const
+{
+   QLog_Debug("Git", QString("Executing rebase: {%1} onto {%2}").arg(ontoBranch, mGitBase->getCurrentBranch()));
+
+   const auto cmd = QString("git rebase %1").arg(ontoBranch);
+
+   return mGitBase->run(cmd);
+}
