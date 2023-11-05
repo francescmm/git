@@ -113,3 +113,12 @@ GitExecResult GitMerge::rebase(const QString &ontoBranch) const
 
    return mGitBase->run(cmd);
 }
+
+GitExecResult GitMerge::rebaseAbort() const
+{
+   QLog_Debug("Git", QString("Aborting rebase"));
+
+   const auto cmd = QString("git rebase --abort");
+
+   return mGitBase->run(cmd);
+}
