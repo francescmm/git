@@ -48,7 +48,7 @@ QString GitBase::getTopLevelRepo(const QString &path) const
 {
    QLog_Trace("Git", "Updating the cached current branch");
 
-   const auto cmd = QString("git -C %1 rev-parse --show-toplevel").arg(path);
+   const auto cmd = QString("git -C \"%1\" rev-parse --show-toplevel").arg(path);
 
    QLog_Trace("Git", QString("Updating the cached current branch: {%1}").arg(cmd));
 
