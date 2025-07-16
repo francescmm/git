@@ -12,6 +12,7 @@ add_library(git STATIC
 target_link_libraries(git
     PUBLIC
     Qt::Core
+    PRIVATE
     QLogger
 )
 target_include_directories(git PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
