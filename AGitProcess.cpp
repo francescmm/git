@@ -61,11 +61,7 @@ QStringList splitArgList(const QString &cmd)
 
    // early exit the common case
    if (!(cmd.contains("$") || cmd.contains("\"") || cmd.contains("\'")))
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
       return cmd.split(' ', Qt::SkipEmptyParts);
-#else
-      return cmd.split(' ', QString::SkipEmptyParts);
-#endif
 
    // we have some work to do...
    // first find a possible separator
@@ -95,11 +91,7 @@ QStringList splitArgList(const QString &cmd)
    // QProcess::setArguments doesn't want quote
    // delimited arguments, so remove trailing quotes
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
    auto sl = QStringList(newCmd.split(sepChar, Qt::SkipEmptyParts));
-#else
-   auto sl = QStringList(newCmd.split(sepChar, QString::SkipEmptyParts));
-#endif
    QStringList::iterator it(sl.begin());
 
    for (; it != sl.end(); ++it)
@@ -107,15 +99,17 @@ QStringList splitArgList(const QString &cmd)
       if (it->isEmpty())
          continue;
 
-      if (((*it).at(0) == QStringLiteral("\"") && (*it).right(1) == QStringLiteral("\""))
-          || ((*it).at(0) == QStringLiteral("\'") && (*it).right(1) == QStringLiteral("\'")))
+      if ((it->at(0) == QStringLiteral("\"") && it->right(1) == QStringLiteral("\""))
+          || (it->at(0) == QStringLiteral("\'") && it->right(1) == QStringLiteral("\'")))
       {
-         *it = (*it).mid(1, (*it).length() - 2);
+         *it = it->mid(1, it->length() - 2);
       }
    }
    return sl;
 }
 }
+
+QStringList AGitProcess::mExtraPaths{};
 
 AGitProcess::AGitProcess(const QString &workingDir)
    : mWorkingDirectory(workingDir)
@@ -123,6 +117,15 @@ AGitProcess::AGitProcess(const QString &workingDir)
    qRegisterMetaType<GitExecResult>("GitExecResult");
 
    setWorkingDirectory(mWorkingDirectory);
+
+   // Clone the current environment
+   auto env = QProcessEnvironment::systemEnvironment();
+
+   // Append /opt/homebrew/bin to PATH
+   env.insert("PATH", env.value("PATH") + ":/opt/homebrew/bin");
+
+   // Apply the modified environment to the process
+   setProcessEnvironment(env);
 
    connect(this, &AGitProcess::readyReadStandardOutput, this, &AGitProcess::onReadyStandardOutput,
            Qt::DirectConnection);
@@ -136,6 +139,11 @@ void AGitProcess::onCancel()
    mCanceling = true;
 
    waitForFinished();
+}
+
+void AGitProcess::setAdditionalPaths(const QStringList& paths)
+{
+   mExtraPaths = paths;
 }
 
 void AGitProcess::onReadyStandardOutput()
@@ -163,6 +171,12 @@ bool AGitProcess::execute(const QString &command)
       env << "GIT_TRACE=0"; // avoid choking on debug traces
       env << "GIT_FLUSH=0"; // skip the fflush() in 'git log'
       env << loginApp();
+
+      // Clone the current environment
+      auto e = QProcessEnvironment::systemEnvironment();
+
+      // Append /opt/homebrew/bin to PATH
+      env << QString("PATH=%1:%2").arg(e.value("PATH"), mExtraPaths.join(":"));
 
       const auto gitAlternative = QSettings().value("gitLocation", "").toString();
 

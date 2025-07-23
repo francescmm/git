@@ -39,6 +39,7 @@ public:
 
    virtual GitExecResult run(const QString &command) = 0;
    void onCancel();
+   static void setAdditionalPaths(const QStringList& paths);
 
 protected:
    QString mRunOutput;
@@ -52,4 +53,6 @@ protected:
 
 private:
    void onReadyStandardOutput();
+
+   static QStringList mExtraPaths;
 };
