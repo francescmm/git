@@ -19,11 +19,7 @@ QVector<QString> GitWip::getUntrackedFiles() const
 
    auto runCmd = QString("git ls-files --others --exclude-standard");
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
    const auto ret = mGit->run(runCmd).output.split('\n', Qt::SkipEmptyParts).toVector();
-#else
-   const auto ret = mGit->run(runCmd).output.split('\n', QString::SkipEmptyParts).toVector();
-#endif
 
    return ret;
 }
@@ -69,11 +65,7 @@ std::optional<GitWip::FileStatus> GitWip::getFileStatus(const QString &filePath)
 
    if (ret.success)
    {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
       const auto lines = ret.output.split("\n", Qt::SkipEmptyParts);
-#else
-      const auto lines = ret.output.split("\n", QString::SkipEmptyParts);
-#endif
 
       if (lines.count() > 1)
          return FileStatus::DeletedByThem;

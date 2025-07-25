@@ -6,9 +6,7 @@
 
 #include <QLogger.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #   include <QRegularExpression>
-#endif
 
 using namespace QLogger;
 
@@ -108,15 +106,9 @@ GitExecResult GitBranches::checkoutRemoteBranch(const QString &branchName)
       mGitBase->updateCurrentBranch();
    else if (output.contains("already exists"))
    {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-      static QRegExp rx("\'\\w+\'");
-      rx.indexIn(ret.output);
-      auto value = rx.capturedTexts().constFirst();
-#else
       static QRegularExpression rx("\'\\w+\'");
       const auto texts = rx.match(ret.output).capturedTexts();
       auto value = texts.isEmpty() ? QString() : texts.constFirst();
-#endif
       value.remove("'");
 
       if (!value.isEmpty())

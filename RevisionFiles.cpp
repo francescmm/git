@@ -4,11 +4,7 @@ RevisionFiles::RevisionFiles(const QString &diff, bool cached)
 {
    auto parNum = 1;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
    const auto lines = diff.split("\n", Qt::SkipEmptyParts);
-#else
-   const auto lines = diff.split("\n", QString::SkipEmptyParts);
-#endif
 
    for (auto line : lines)
    {
@@ -147,11 +143,7 @@ void RevisionFiles::appendStatus(int pos, RevisionFiles::StatusFlag flag)
 
 void RevisionFiles::setExtStatus(const QString &rowSt, int parNum)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
    const QStringList sl(rowSt.split('\t', Qt::SkipEmptyParts));
-#else
-   const QStringList sl(rowSt.split('\t', QString::SkipEmptyParts));
-#endif
    if (sl.count() != 3)
       return;
 
